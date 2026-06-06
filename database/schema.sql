@@ -1,0 +1,100 @@
+CREATE DATABASE IF NOT EXISTS student_management_system;
+USE student_management_system;
+
+CREATE TABLE IF NOT EXISTS users (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('ADMIN','STUDENT','STAFF') NOT NULL,
+  enabled BOOLEAN DEFAULT TRUE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS roles (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name ENUM('ADMIN','STUDENT','STAFF') NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS students (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  register_number VARCHAR(255) NOT NULL UNIQUE,
+  department VARCHAR(255) NOT NULL,
+  email VARCHAR(255),
+  phone_number VARCHAR(50),
+  gender VARCHAR(30),
+  address VARCHAR(1200),
+  year INT,
+  dob DATE,
+  profile_photo_path VARCHAR(500),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS staff (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255),
+  email VARCHAR(255),
+  department VARCHAR(255),
+  phone_number VARCHAR(50),
+  designation VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS courses (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  code VARCHAR(100) NOT NULL UNIQUE,
+  name VARCHAR(255) NOT NULL,
+  assigned_faculty VARCHAR(255),
+  description VARCHAR(2000),
+  duration VARCHAR(100)
+);
+
+CREATE TABLE IF NOT EXISTS attendance (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  date DATE NOT NULL,
+  status ENUM('PRESENT','ABSENT') NOT NULL,
+  CONSTRAINT fk_attendance_student FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+  CONSTRAINT uq_attendance_student_date UNIQUE (student_id, date)
+);
+
+CREATE TABLE IF NOT EXISTS marks (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  course_id BIGINT NOT NULL,
+  semester INT,
+  internal_marks DOUBLE,
+  external_marks DOUBLE,
+  total DOUBLE,
+  grade VARCHAR(10),
+  gpa DOUBLE,
+  CONSTRAINT fk_marks_student FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+  CONSTRAINT fk_marks_course FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS fees (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  student_id BIGINT NOT NULL,
+  amount DECIMAL(12,2),
+  status ENUM('PAID','UNPAID') NOT NULL,
+  payment_mode VARCHAR(80),
+  payment_date DATE,
+  CONSTRAINT fk_fees_student FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS notifications (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  recipient VARCHAR(255),
+  subject VARCHAR(255),
+  message VARCHAR(3000),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS activity_logs (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  action VARCHAR(255),
+  actor VARCHAR(255),
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT IGNORE INTO roles (name) VALUES ('ADMIN'), ('STUDENT'), ('STAFF');
