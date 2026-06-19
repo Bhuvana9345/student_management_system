@@ -1,0 +1,10 @@
+.git
+.gitignore
+target/
+*.class
+*.jar
+.DS_Store
+.settings/
+.project
+.classpath
+uploads/
