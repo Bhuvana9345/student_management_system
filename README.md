@@ -1,6 +1,8 @@
 # CampusERP College - Student Management System
 
 A complete full-stack Student Management System for a college ERP workflow. The project includes a modern React admin dashboard, Spring Boot REST API, JWT authentication, MySQL database integration, student/staff/course management, attendance, marks, fees, PDF receipts, Excel export, and an offline AI-style college guide.
+
+
 Repository
      https://github.com/Bhuvana9345/student_management_system
 
