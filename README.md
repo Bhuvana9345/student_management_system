@@ -5,11 +5,11 @@ A complete full-stack Student Management System for a college ERP workflow. The 
 
 Repository
     
-     https://github.com/Bhuvana9345/student_management_system
+https://github.com/Bhuvana9345/student_management_system
 
 Live Demo Link
      
-     https://student-management-system-pi-swart.vercel.app/
+https://student-management-system-pi-swart.vercel.app/
 
 ## Tech Stack
 
